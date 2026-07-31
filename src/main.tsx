@@ -1,70 +1,205 @@
 ```tsx
-import { StrictMode } from 'react';
+import React, { useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom';
-import React, { Suspense, useEffect } from 'react';
-import Layout from './components/Layout';
 import './index.css';
 
-const Home = React.lazy(() => import('./pages/Home'));
-const Shop = React.lazy(() => import('./pages/Shop'));
-const Laces = React.lazy(() => import('./pages/Laces'));
-const Product = React.lazy(() => import('./pages/Product'));
-const Cart = React.lazy(() => import('./pages/Cart'));
-const Checkout = React.lazy(() => import('./pages/Checkout'));
-const About = React.lazy(() => import('./pages/About'));
-const Shipping = React.lazy(() => import('./pages/Shipping'));
-const Faq = React.lazy(() => import('./pages/Faq'));
-const Contact = React.lazy(() => import('./pages/Contact'));
-const Admin = React.lazy(() => import('./pages/Admin'));
-const ReturnPolicy = React.lazy(() => import('./pages/Return'));
+const products = [
+  {
+    name: 'Custom Denim Adidas Superstar',
+    price: '€146,99',
+    image: '/images/custom denim adidas superstar foto 1.jpg',
+  },
+  {
+    name: 'Custom Camo Adidas Superstar',
+    price: '€171,99',
+    image: '/images/Custom Camo Adidas Superstar.jpg',
+  },
+  {
+    name: 'Custom Yellow Adidas Superstar',
+    price: '€146,99',
+    image: '/images/custom yellow adidas superstar limited edition foto 1.jpg',
+  },
+  {
+    name: 'Custom Denim Yellow Adidas Superstar',
+    price: '€171,99',
+    image: '/images/custom denim yellow adidas superstar foto 1.jpg',
+  },
+  {
+    name: 'Custom Denim Black Red Adidas Superstar',
+    price: '€171,99',
+    image: '/images/custom denim black red adidas superstar limited edition foto 1.jpg',
+  },
+];
 
-function ScrollToTop() {
-  const { pathname } = useLocation();
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  return null;
-}
+const laces = [
+  {
+    name: 'Fluffy White',
+    image: '/images/fluffy veters wit.jpg',
+  },
+  {
+    name: 'Fluffy Pink',
+    image: '/images/fluffy veters roze.jpg',
+  },
+  {
+    name: 'Fluffy Black',
+    image: '/images/fluffy veters zwart.jpg',
+  },
+  {
+    name: 'White',
+    image: '/images/veters wit.jpg',
+  },
+  {
+    name: 'Black',
+    image: '/images/veters zwart.jpg',
+  },
+  {
+    name: 'Yellow',
+    image: '/images/veters yellow.jpg',
+  },
+  {
+    name: 'Light Pink',
+    image: '/images/veters licht roze.jpg',
+  },
+  {
+    name: 'Army Green',
+    image: '/images/veters leger groen.jpg',
+  },
+];
 
 function App() {
-  return (
-    <HashRouter>
-      <ScrollToTop />
+  const [page, setPage] = useState<'home' | 'shop' | 'laces'>('home');
 
-      <Suspense
-        fallback={
-          <div style={{ paddingTop: '100px', textAlign: 'center' }}>
-            Laden...
+  return (
+    <div className="site">
+      <header className="header">
+        <div className="header-inner">
+          <button className="logo" onClick={() => setPage('home')}>
+            <span>010.6643</span>
+            <strong>TRIPLE TREADZ</strong>
+          </button>
+
+          <nav>
+            <button onClick={() => setPage('home')}>Home</button>
+            <button onClick={() => setPage('shop')}>Shoes</button>
+            <button onClick={() => setPage('laces')}>Laces</button>
+          </nav>
+        </div>
+      </header>
+
+      {page === 'home' && (
+        <>
+          <section className="hero">
+            <div className="hero-image">
+              <img
+                src="/images/Custom Camo Adidas Superstar.jpg"
+                alt="Custom Camo Adidas Superstar"
+              />
+            </div>
+
+            <div className="hero-content">
+              <span className="eyebrow">TRIPLE TREADZ — ATELIER</span>
+              <h1>Custom sneakers.<br />Made different.</h1>
+              <p>
+                Hand-customized Adidas Superstars and unique laces,
+                made with attention to every detail.
+              </p>
+
+              <div className="buttons">
+                <button className="button white" onClick={() => setPage('shop')}>
+                  SHOP SHOES
+                </button>
+                <button className="button outline" onClick={() => setPage('laces')}>
+                  SHOP LACES
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section className="section">
+            <div className="section-title">
+              <span className="eyebrow">FEATURED</span>
+              <h2>Our sneakers</h2>
+            </div>
+
+            <div className="product-grid">
+              {products.map((product) => (
+                <div className="product-card" key={product.name}>
+                  <div className="product-image">
+                    <img src={product.image} alt={product.name} />
+                  </div>
+                  <h3>{product.name}</h3>
+                  <p>{product.price}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="section dark-section">
+            <div className="section-title">
+              <span className="eyebrow">LACES</span>
+              <h2>Complete your pair</h2>
+            </div>
+
+            <div className="lace-grid">
+              {laces.map((lace) => (
+                <div className="lace-card" key={lace.name}>
+                  <img src={lace.image} alt={lace.name} />
+                  <h3>{lace.name}</h3>
+                  <p>€10,00</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
+
+      {page === 'shop' && (
+        <section className="section page">
+          <span className="eyebrow">SHOP</span>
+          <h1>Custom Sneakers</h1>
+
+          <div className="product-grid">
+            {products.map((product) => (
+              <div className="product-card" key={product.name}>
+                <div className="product-image">
+                  <img src={product.image} alt={product.name} />
+                </div>
+                <h3>{product.name}</h3>
+                <p>{product.price}</p>
+              </div>
+            ))}
           </div>
-        }
-      >
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="shop" element={<Shop />} />
-            <Route path="laces" element={<Laces />} />
-            <Route path="product/:id" element={<Product />} />
-            <Route path="cart" element={<Cart />} />
-            <Route path="checkout" element={<Checkout />} />
-            <Route path="about" element={<About />} />
-            <Route path="shipping" element={<Shipping />} />
-            <Route path="faq" element={<Faq />} />
-            <Route path="contact" element={<Contact />} />
-            <Route path="return" element={<ReturnPolicy />} />
-            <Route path="admin" element={<Admin />} />
-          </Route>
-        </Routes>
-      </Suspense>
-    </HashRouter>
+        </section>
+      )}
+
+      {page === 'laces' && (
+        <section className="section page">
+          <span className="eyebrow">SHOP</span>
+          <h1>Laces</h1>
+
+          <div className="lace-grid">
+            {laces.map((lace) => (
+              <div className="lace-card" key={lace.name}>
+                <img src={lace.image} alt={lace.name} />
+                <h3>{lace.name}</h3>
+                <p>€10,00</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <footer>
+        <strong>010.6643 — TRIPLE TREADZ</strong>
+        <p>Handmade in NL · © 2026 TripleThreadz</p>
+      </footer>
+    </div>
   );
 }
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  <React.StrictMode>
     <App />
-  </StrictMode>
+  </React.StrictMode>
 );
 ```
